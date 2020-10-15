@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./pages/index.css">
     <title>Место</title>
 </head>
 <body>
@@ -43,14 +44,14 @@
             <div class="popup__content">
                 <h3 class="popup__title">Редактировать профиль</h3>
                 <div class="popup__inputs">
-                   
+
                 <input type="text" autocomplete="off" id="user-name" name="profileName" class="popup__input popup__input_name" placeholder="Имя"  required minlength="2" maxlength="40">
                 <span id="user-name-error" class="error"></span>
 
                 <input type="text" autocomplete="off" id="about-user" name="info" class="popup__input popup__input_job" placeholder="О себе"  required minlength="2" maxlength="200">
                 <span id="about-user-error" class="error"></span>
 
-                
+
             </div>
            <button type="submit" class="popup__button popup__button_disabled">
             Сохранить
@@ -66,15 +67,15 @@
             <div class="popup-pluse__content">
                 <h3 class="popup-pluse__title">Новое место</h3>
                 <div class="popup-pluse__inputs">
-                <input type="text" autocomplete="off" id="name-card" name="name" class="popup-pluse__input popup__input" placeholder="Название" required minlength="1" maxlength="30"> 
+                <input type="text" autocomplete="off" id="name-card" name="name" class="popup-pluse__input popup__input" placeholder="Название" required minlength="1" maxlength="30">
 
                 <span id="name-card-error" class="error"></span>
 
-                <input  type="url" autocomplete="off" id="link" name="link" class="popup__input  popup-pluse__input-link" placeholder="Ссылка на картинку" required> 
+                <input  type="url" autocomplete="off" id="link" name="link" class="popup__input  popup-pluse__input-link" placeholder="Ссылка на картинку" required>
 
                 <span id="link-error" class="error"></span>
             </div>
-            <button type="submit" class="popup__button popup-pluse__button popup__button_disabled"> 
+            <button type="submit" class="popup__button popup-pluse__button popup__button_disabled">
                Создать
             </button>
             </div>
@@ -87,22 +88,22 @@
             </button>
             <div class="popup-avatar__content">
             <h3 class="popup-avatar__title">Обновить аватар</h3>
-            <input type="url" autocomplete="off" id="avatar-link" name="avatar-link" class="popup__input popup-avatar__input-link" placeholder="Ссылка на картинку" required> 
+            <input type="url" autocomplete="off" id="avatar-link" name="avatar-link" class="popup__input popup-avatar__input-link" placeholder="Ссылка на картинку" required>
             <span id="avatar-link-error" class="error"></span>
-            <button type="submit" class="popup__button popup-avatar__button popup__button_disabled"> 
+            <button type="submit" class="popup__button popup-avatar__button popup__button_disabled">
                 Сохранить
              </button>
             </div>
         </form>
     </div>
     <div class="popup popup-delete">
-        <form class="form popup__form popup-delete__container"> 
+        <form class="form popup__form popup-delete__container">
             <button type="reset" class="popup__vector-button">
                 <img class="popup-delete__vector" src="./images/close__icon.svg" alt="кнопка закрытия">
             </button>
             <div class="popup-delete__content">
                 <h3 class="popup-delete__title">Вы уверены?</h3>
-                <button type="submit" class="popup-delete__button"> 
+                <button type="submit" class="popup-delete__button">
                     Да
                 </button>
         </form>
@@ -118,7 +119,7 @@
         <div class="element__like-counter">
             <button type="button" class="element__button-like">
 
-            </button>         
+            </button>
             <p class="element__counter">0</p>
         </div>
         </div>
@@ -127,12 +128,13 @@
     <div class="popup-element popup">
         <div class="popup__element-container">
         <img class="popup__element-image"  alt="">
-        <h2 class="popup__element-text"></h2> 
+        <h2 class="popup__element-text"></h2>
         <button type="reset" class="popup__vector-button">
             <img class="popup__vector-element" src="./images/close__icon.svg" alt="кнопка закрытия">
         </button>
     </div>
     </div>
 </div>
+<script type="module" src="./pages/index.js"></script>
 </body>
 </html>
