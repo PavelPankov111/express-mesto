@@ -1,0 +1,13 @@
+node_modules
+index.js
+AddPlacePopup.js
+App.js
+Card.js
+DeletePopup.js
+EditAvatarPopup.js
+EditProfilePopup.js
+Footer.js
+Header.js
+ImagePopup.js
+Main.js
+PopupWithForm.js
