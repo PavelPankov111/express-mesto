@@ -13,6 +13,10 @@ router.get('/cards', (req, res) => {
   readCardsFile(jsonDataPath)
     .then((data) => {
       res.send(data);
+    })
+    .catch((err) => {
+      console.error('err = ', err);
+      res.status(500).send({ message: 'Ошибка на сервере' });
     });
 });
 

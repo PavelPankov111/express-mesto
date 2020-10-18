@@ -3,15 +3,14 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const path = require('path');
-const usersRoutes = require('./routes/users.js');
-const cardsRoutes = require('./routes/cards.js');
+const cardsUsersRoutes = require('./routes/index');
+
 const app = express();
 
 const { PORT = 3000 } = process.env;
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', usersRoutes);
-app.use('/', cardsRoutes);
+app.use('/', cardsUsersRoutes);
 app.get('*', (req, res) => {
   res.send({ message: 'Запрашиваемый ресурс не найден' }, 404);
 });

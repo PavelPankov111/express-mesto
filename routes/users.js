@@ -13,6 +13,10 @@ router.get('/users', (req, res) => {
   readUsersFile(jsonDataPath)
     .then((data) => {
       res.send(data);
+    })
+    .catch((err) => {
+      console.error('err = ', err);
+      res.status(500).send({ message: 'Ошибка на сервере' });
     });
 });
 
@@ -28,6 +32,10 @@ router.get('/users/:id', (req, res) => {
         return res.status(404).send({ message: 'Нет пользователя с таким id' });
       }
       res.send(user);
+    })
+    .catch((err) => {
+      console.error('err = ', err);
+      res.status(500).send({ message: 'Ошибка на сервере' });
     });
 });
 
