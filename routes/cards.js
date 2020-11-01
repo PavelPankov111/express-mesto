@@ -1,23 +1,64 @@
 const router = require('express').Router();
-const path = require('path');
-const jsonDataPath = path.join(__dirname, '..', 'data', 'cards.json');
-const fsPromises = require('fs').promises;
+const Card = require('../models/card');
 
-function readCardsFile(pathUrl) {
-  return fsPromises.readFile(pathUrl, { encoding: 'utf8' })
-    .then((file) => JSON.parse(file));
-}
+router.get('/cards', async (req, res) => {
+  try{
+    const card =  await Card.find({})
+    res.status(200).send(card);
+  } catch (err){
+    console.log(`ERROR: ${err.name}`)
+    console.log(`ERROR: ${err.message}`)
 
-router.get('/cards', (req, res) => {
-  console.log(readCardsFile(jsonDataPath));
-  readCardsFile(jsonDataPath)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.error('err = ', err);
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    });
+    if(err.name === 'ValidationError'){
+      res.status(400).send({message: 'Введены некорректные данные!'})
+    }
+
+    res.status(500).send({ message: 'Ошибка на сервере' });
+  }
 });
+
+router.post('/cards', async (req, res) => {
+  try{
+    const {name, link} = req.body
+    console.log(req.user._id)
+    const card = await Card.create({name, link, owner: req.user._id})
+    res.status(200).send(card)
+  } catch (err){
+    console.log(`ERROR: ${err.name}`)
+    console.log(`ERROR: ${err.message}`)
+
+    if(err.name === 'ValidationError'){
+      res.status(400).send({message: 'Введены некорректные данные!'})
+    }
+
+    res.status(500).send({ message: 'Ошибка на сервере' });
+  }
+})
+
+router.delete('/cards/:cardId', (req, res) =>  {
+  Card.findByIdAndRemove({ _id: req.params.cardId }, function(err, docs) {
+    console.log(req.params)
+    if (err){
+      console.log(err)
+    }
+    else{
+      console.log("Deleted : ", docs);
+    }
+  })
+  .then((card) => {
+      res.status(200).send(card);
+  })
+  .catch(err => {
+      console.log(err)
+      console.log(`ERROR: ${err.name}`)
+      console.log(`ERROR: ${err.message}`)
+
+      if(err.name === 'ValidationError'){
+        res.status(400).send({message: 'Введены некорректные данные!'})
+      }
+
+      res.status(500).send({ message: 'Ошибка на сервере' });
+  });
+})
 
 module.exports = router;

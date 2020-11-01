@@ -1,42 +1,59 @@
 /* eslint-disable consistent-return */
 const router = require('express').Router();
-const path = require('path');
-const jsonDataPath = path.join(__dirname, '..', 'data', 'users.json');
-const fsPromises = require('fs').promises;
+const User = require('../models/user')
 
-function readUsersFile(pathUrl) {
-  return fsPromises.readFile(pathUrl, { encoding: 'utf8' })
-    .then((file) => JSON.parse(file));
-}
+router.get('/users', async (req, res) => {
+  try{
+    const user = await User.find({})
+    res.status(200).send(user);
+  } catch (err){
+    console.log(`ERROR: ${err.name}`)
+    console.log(`ERROR: ${err.message}`)
 
-router.get('/users', (req, res) => {
-  readUsersFile(jsonDataPath)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.error('err = ', err);
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    });
+    if(err.name === 'ValidationError'){
+      res.status(400).send({message: 'Введены некорректные данные!'})
+    }
+
+    res.status(500).send({ message: 'Ошибка на сервере' });
+  }
 });
 
+router.post('/users', async (req, res) => {
+  try{
+    const {name,avatar,about} = req.body
+    console.log(req.body)
+    const createUser = await User.create({ name, about, avatar })
+    res.status(200).send(createUser)
+  } catch (err){
+    console.log(`ERROR: ${err.name}`)
+    console.log(`ERROR: ${err.message}`)
+
+    if(err.name === 'ValidationError'){
+      res.status(400).send({message: 'Введены некорректные данные!'})
+    }
+
+    res.status(500).send({ message: 'Ошибка на сервере' })
+  }
+})
+
 router.get('/users/:id', (req, res) => {
-  const { id } = req.params;
-  return readUsersFile(jsonDataPath)
-    .then((data) => {
-      const userToFind = data.find((user) => user._id === id);
-      return userToFind;
-    })
-    .then((user) => {
-      if (!user) {
-        return res.status(404).send({ message: 'Нет пользователя с таким id' });
-      }
-      res.send(user);
-    })
-    .catch((err) => {
-      console.error('err = ', err);
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    });
+  return User.findById(req.params.id)
+  .then((user) => {
+    if (!user) {
+      return res.status(404).send({ message: 'Нет пользователя с таким id' });
+    }
+    return res.status(200).send(user);
+  })
+  .catch((err) => {
+    console.log(`ERROR: ${err.name}`)
+    console.log(`ERROR: ${err.message}`)
+
+    if(err.name === 'ValidationError'){
+      res.status(400).send({message: 'Введены некорректные данные!'})
+    }
+
+    res.status(500).send({ message: 'Ошибка на сервере' });
+  });
 });
 
 module.exports = router;
