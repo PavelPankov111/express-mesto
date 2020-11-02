@@ -1,30 +1,31 @@
-const {Schema, model} = require('mongoose');
+/* eslint-disable no-useless-escape */
+const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema({
-  name:{
+  name: {
     type: String,
     minlength: 2,
     required: true,
-    maxlength: 30
+    maxlength: 30,
   },
-  about:{
+  about: {
     type: String,
     minlength: 2,
     required: true,
-    maxlength: 30
+    maxlength: 30,
   },
-  avatar:{
+  avatar: {
     type: String,
     required: true,
-    validate:{
-      validator(v){
-        var link = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+    validate: {
+      validator(v) {
+        const link = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
 
-        return link.test(v)
+        return link.test(v);
       },
-      message: 'Введите ссылку'
-    }
-  }
-})
+      message: 'Введите ссылку',
+    },
+  },
+});
 
-module.exports = model('user', userSchema)
+module.exports = model('user', userSchema);
