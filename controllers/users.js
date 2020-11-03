@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 const User = require('../models/user');
 
@@ -7,9 +6,6 @@ module.exports.getUsers = async (req, res) => {
     const user = await User.find({});
     res.status(200).send(user);
   } catch (err) {
-    console.log(`ERROR: ${err.name}`);
-    console.log(`ERROR: ${err.message}`);
-
     if (err.name === 'ValidationError') {
       res.status(400).send({ message: 'Введены некорректные данные!' });
     }
@@ -21,13 +17,9 @@ module.exports.getUsers = async (req, res) => {
 module.exports.postUsers = async (req, res) => {
   try {
     const { name, avatar, about } = req.body;
-    console.log(req.body);
     const createUser = await User.create({ name, about, avatar });
     res.status(200).send(createUser);
   } catch (err) {
-    console.log(`ERROR: ${err.name}`);
-    console.log(`ERROR: ${err.message}`);
-
     if (err.name === 'ValidationError') {
       res.status(400).send({ message: 'Введены некорректные данные!' });
     }
@@ -44,9 +36,6 @@ module.exports.getUsersId = (req, res) => User.findById(req.params.id)
     return res.status(200).send(user);
   })
   .catch((err) => {
-    console.log(`ERROR: ${err.name}`);
-    console.log(`ERROR: ${err.message}`);
-
     if (err.name === 'ValidationError') {
       res.status(400).send({ message: 'Введены некорректные данные!' });
     }
