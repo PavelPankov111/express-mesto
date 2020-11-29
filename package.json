@@ -4,8 +4,14 @@
   "description": "## Директории",
   "main": "app.js",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^13.0.4",
     "express": "^4.17.1",
-    "mongoose": "^5.10.11"
+    "express-winston": "^4.0.5",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.11",
+    "validator": "^13.1.17",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "eslint-plugin-import": "^2.22.1",

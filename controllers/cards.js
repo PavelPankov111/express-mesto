@@ -1,34 +1,25 @@
+/* eslint-disable semi */
 /* eslint-disable consistent-return */
 const Card = require('../models/card');
+const NotFoundError = require('../errors/not-found-err');
 
-module.exports.getCards = async (req, res) => {
-  try {
-    const card = await Card.find({});
-    return res.status(200).send(card);
-  } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Введены некорректные данные!' });
-    }
+module.exports.getCards = (req, res, next) => {
+  Card.find({})
+    .then((card) => res.status(200).send(card))
+    .catch(next);
+}
 
-    return res.status(500).send({ message: 'Ошибка на сервере' });
-  }
-};
-
-module.exports.postCards = async (req, res) => {
+module.exports.postCards = async (req, res, next) => {
   try {
     const { name, link } = req.body;
     const card = await Card.create({ name, link, owner: req.user._id });
     return res.status(200).send(card);
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Введены некорректные данные!' });
-    }
-
-    return res.status(500).send({ message: 'Ошибка на сервере' });
+    next(err);
   }
 };
 
-module.exports.deleteCards = (req, res) => {
+module.exports.deleteCards = (req, res, next) => {
   Card.findByIdAndRemove({ _id: req.params.cardId })
     .then((card) => {
       if (card === null) {
@@ -36,15 +27,35 @@ module.exports.deleteCards = (req, res) => {
       }
       return res.status(200).send(card);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return res.status(404).send({ message: 'Карточки с таким id - не существует!' });
-      }
+    .catch(next);
+};
 
-      if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: 'Введены некорректные данные!' });
+module.exports.likeCard = (req, res, next) => {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true },
+  )
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Такой карточки не существует');
       }
+      res.send(card);
+    })
+    .catch(next);
+};
 
-      return res.status(500).send({ message: 'Ошибка на сервере' });
-    });
+module.exports.dislikeCard = (req, res, next) => {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $pull: { likes: req.user._id } },
+    { new: true },
+  )
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Такой карточки не существует');
+      }
+      res.send(card);
+    })
+    .catch(next);
 };
